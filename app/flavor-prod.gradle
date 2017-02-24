@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    compileSdkVersion 24
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.sino.bridge.myapplication"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+        }
+        debug {
+        }
+    }
+    productFlavors {
+
+        pro1 {
+        }
+
+        pro2 {
+        }
+    }
+    sourceSets {
+        main.java.srcDirs = ['src/main','src/flavor/f2']
+        main.res.srcDirs = ['src/main/res', 'src/flavor/f2/res']
+
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.jakewharton:butterknife:5.1.1'
+}

@@ -1,0 +1,69 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+            keyAlias 'def_android'
+            keyPassword '123456'
+            storeFile file('def.jks')
+            storePassword '123456'
+        }
+    }
+    compileSdkVersion 24
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.sino.bridge.myapplication"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.config
+
+        }
+        debug {
+
+        }
+    }
+    productFlavors {
+
+        F1 {
+        }
+
+        F2 {
+        }
+    }
+//    def f = 'dev'
+    applicationVariants.all {
+        variant ->
+
+            variant.outputs.each {
+                output ->
+//                    f = variant.buildType.name.equals('debug') ? 'dev' : 'prod'
+
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName = outputFile.name.replace(".apk", "-${defaultConfig.versionCode}-${defaultConfig.versionName}.apk")
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+            }
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+}
+//    apply from: "flavor-${f}.gradle"
+//    apply from: "flavor-dev.gradle"
+    apply from: "flavor-prod.gradle"
+//设置编码类型
+tasks.withType(JavaCompile) { options.encoding = "UTF-8" }
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:gridlayout-v7:24.2.1'
+}
